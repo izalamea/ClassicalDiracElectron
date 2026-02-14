@@ -14,7 +14,7 @@ python3 plot_trajectory.py -o classical_dirac_electron.jpeg
 
 **Gnuplot:**
 
-![Trajectory for an electron in a constant magnetic field](trajectory.jpeg)
+![Trajectory for an electron in a constant magnetic field](trajectory.png)
 
 ```bash
 mkdir -p Trajectories
