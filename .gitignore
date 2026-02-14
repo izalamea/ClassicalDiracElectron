@@ -8,7 +8,6 @@ Plotter
 
 # Generated
 script_*.gp
-trajectory.png
 
 # Python
 .venv/
