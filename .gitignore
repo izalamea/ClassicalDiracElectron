@@ -1,0 +1,15 @@
+# Trajectory data
+Trajectories/
+*.dat
+
+# Build artifacts
+CDE_4thRK
+Plotter
+
+# Generated
+script_*.gp
+trajectory.png
+
+# Python
+.venv/
+__pycache__/

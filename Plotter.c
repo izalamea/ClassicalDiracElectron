@@ -19,7 +19,7 @@ int main(){
   if ( ( IfPtr = fopen( name, "w" ) ) == NULL )
     printf( "File could not be opened. %s\n",name);
 
-      fprintf(IfPtr, "set nokey\nsp ",it);
+      fprintf(IfPtr, "set nokey\nsplot ");
   //     fprintf(IfPtr, "sp ",it);
   for(it=0;it<Nparticles-1;it++){
     fprintf(IfPtr, "\"./Trajectories/CE_trajectory_RK_%d_.dat\" using 4:5:6 w l, ",it);
@@ -36,7 +36,7 @@ int main(){
   sprintf(name,"out1");
   if ( ( IfPtr = fopen( name, "r" ) ) == NULL )
     printf( "File could not be opened. %s\n",name);
-
+  else
   while ( !feof( IfPtr ) ){
     fscanf( IfPtr, "%lf %lf %lf %lf %lf\n",&z,&z,&x,&y,&z);
 
@@ -48,9 +48,8 @@ int main(){
 
   }
 
-
-
-  fclose(IfPtr);
+  if ( IfPtr != NULL )
+    fclose(IfPtr);
 
   z=0.;
   for(it=0;it<Ndist;it++){
