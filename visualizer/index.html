@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classical Dirac Electron — Interactive Visualizer</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }
+    #canvas { display: block; width: 100%; height: 100%; }
+    #panel {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      width: 280px;
+      max-height: calc(100vh - 24px);
+      overflow-y: auto;
+      background: rgba(18, 18, 24, 0.92);
+      color: #e4e4e7;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      font-size: 13px;
+    }
+    #panel h2 { margin: 0 0 12px; font-size: 1rem; font-weight: 600; color: #a5b4fc; }
+    #panel section { margin-bottom: 14px; }
+    #panel section:last-child { margin-bottom: 0; }
+    #panel label { display: block; margin-bottom: 4px; color: #94a3b8; }
+    .row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .row label { margin-bottom: 0; flex: 0 0 60px; }
+    input[type="range"] { flex: 1; accent-color: #818cf8; }
+    input[type="number"] { width: 72px; padding: 4px 6px; background: #27272a; border: 1px solid #3f3f46; border-radius: 6px; color: #e4e4e7; }
+    .val { min-width: 56px; color: #a5b4fc; font-variant-numeric: tabular-nums; }
+    .btn { padding: 8px 14px; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+    .btn-primary { background: #6366f1; color: #fff; }
+    .btn-primary:hover { background: #4f46e5; }
+    .btn-secondary { background: #3f3f46; color: #e4e4e7; }
+    .btn-secondary:hover { background: #52525b; }
+    .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .hint { margin: 6px 0 0; color: #64748b; font-size: 11px; }
+    #status { margin-top: 10px; padding-top: 10px; border-top: 1px solid #3f3f46; color: #94a3b8; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="panel">
+    <h2>Classical Dirac Electron</h2>
+
+    <section>
+      <label>Time step dt</label>
+      <div class="row">
+        <label>dt</label>
+        <input type="range" id="dt" min="-6" max="-1" step="0.2" value="-4">
+        <span class="val" id="dtVal">0.0001</span>
+      </div>
+      <div class="row">
+        <label>Steps/frame</label>
+        <input type="range" id="stepsPerFrame" min="1" max="500" value="50">
+        <span class="val" id="stepsPerFrameVal">50</span>
+      </div>
+      <div class="row">
+        <label>Tail (×1000)</label>
+        <input type="range" id="tailLength" min="1" max="100" value="8">
+        <span class="val" id="tailLengthVal">8</span>
+      </div>
+    </section>
+
+    <section>
+      <label>Simulation time T</label>
+      <div class="row">
+        <input type="number" id="T" value="94.25" step="1" min="1">
+        <span style="color:#94a3b8">(≈ 30π)</span>
+      </div>
+    </section>
+
+    <section>
+      <label>Physics (λ, q)</label>
+      <div class="row">
+        <label>λ</label>
+        <input type="range" id="lambda" min="0.1" max="3" step="0.1" value="1">
+        <span class="val" id="lambdaVal">1</span>
+      </div>
+      <div class="row">
+        <label>q</label>
+        <input type="range" id="q" min="-2" max="2" step="0.1" value="1">
+        <span class="val" id="qVal">1</span>
+      </div>
+    </section>
+
+    <section>
+      <label>Electric field (E<sub>x</sub>, E<sub>z</sub>)</label>
+      <div class="row">
+        <label>E<sub>x</sub></label>
+        <input type="range" id="EX" min="-1" max="1" step="0.05" value="0">
+        <span class="val" id="EXVal">0</span>
+      </div>
+      <div class="row">
+        <label>E<sub>z</sub></label>
+        <input type="range" id="EZ" min="-1" max="1" step="0.05" value="0">
+        <span class="val" id="EZVal">0</span>
+      </div>
+    </section>
+
+    <section>
+      <label>Magnetic field B<sub>z</sub></label>
+      <div class="row">
+        <label>B<sub>z</sub></label>
+        <input type="range" id="BZ" min="-2" max="2" step="0.1" value="-0.9">
+        <span class="val" id="BZVal">-0.9</span>
+      </div>
+    </section>
+
+    <section>
+      <label>Initial momentum (α, β, scale)</label>
+      <div class="row">
+        <label>α</label>
+        <input type="range" id="initAlpha" min="0" max="3.14" step="0.1" value="1.57">
+        <span class="val" id="initAlphaVal">1.57</span>
+      </div>
+      <div class="row">
+        <label>β</label>
+        <input type="range" id="initBeta" min="0" max="6.28" step="0.1" value="0">
+        <span class="val" id="initBetaVal">0</span>
+      </div>
+      <div class="row">
+        <label>p₀</label>
+        <input type="range" id="initP0" min="0" max="2" step="0.1" value="0">
+        <span class="val" id="initP0Val">0</span>
+      </div>
+    </section>
+
+    <section class="btn-row">
+      <button class="btn btn-primary" id="playPause">Run</button>
+      <button class="btn btn-secondary" id="reset">Reset</button>
+      <button class="btn btn-secondary" id="recordBtn">Record</button>
+    </section>
+    <p class="hint">Video: WebM, ~2–3 MB/min. Re-encode with ffmpeg for smaller MP4.</p>
+
+    <div id="status">Stopped. Press Run.</div>
+  </div>
+
+  <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+  <script src="simulator.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

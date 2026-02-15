@@ -12,3 +12,6 @@ script_*.gp
 # Python
 .venv/
 __pycache__/
+
+# macOS
+.DS_Store
