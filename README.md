@@ -128,7 +128,11 @@ A web-based 3D visualizer runs the same Barut–Zanghi dynamics in the browser a
 - **Recording** — Click **Record** to capture the canvas; click **Stop recording** to download a WebM file (~2–3 MB/min at 720p). Re-encode for a smaller MP4:  
   `ffmpeg -i recording.webm -c:v libx264 -crf 23 -preset medium output.mp4`
 
-**Sample video:** [sample_video.webm](sample_video.webm) — short recording of the visualizer.
+**Sample (preview):**
+
+![Visualizer preview](sample_video_preview.gif)
+
+Full recording: [sample_video.webm](sample_video.webm) (use "View raw" to download). To regenerate the preview GIF from the WebM: `./scripts/make_preview_gif.sh`
 
 **Run in the browser:**
 
