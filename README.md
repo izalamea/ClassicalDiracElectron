@@ -3,6 +3,8 @@
 This project simulates a classical Dirac electron in time, following the
 Barut–Zanghi model (Phys. Rev. Lett. 52, 2009 (1984)).
 
+![Visualizer](sample_video.gif)
+
 **Matplotlib (Python):**
 
 ![Classical Dirac Electron trajectory](classical_dirac_electron.jpeg)
@@ -128,7 +130,7 @@ A web-based 3D visualizer runs the same Barut–Zanghi dynamics in the browser a
 - **Recording** — Click **Record** to capture the canvas; click **Stop recording** to download a WebM file (~2–3 MB/min at 720p). Re-encode for a smaller MP4:  
   `ffmpeg -i recording.webm -c:v libx264 -crf 23 -preset medium output.mp4`
 
-**Sample video:** [sample_video.webm](sample_video.webm) — short recording of the visualizer.
+**Sample:** ![preview](sample_video.gif) — full video as GIF (reduced fps). Generate with `./scripts/make_preview_gif.sh sample_video.mp4`. Video: [sample_video.mp4](sample_video.mp4) | [sample_video.webm](sample_video.webm) (View raw to download).
 
 **Run in the browser:**
 
