@@ -3,6 +3,8 @@
 This project simulates a classical Dirac electron in time, following the
 Barut–Zanghi model (Phys. Rev. Lett. 52, 2009 (1984)).
 
+![Interactive visualizer preview](sample_video_preview.gif)
+
 **Matplotlib (Python):**
 
 ![Classical Dirac Electron trajectory](classical_dirac_electron.jpeg)
