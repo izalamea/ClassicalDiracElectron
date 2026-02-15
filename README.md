@@ -115,6 +115,39 @@ brew install gnuplot
 
 ---
 
+## Interactive visualizer (browser)
+
+A web-based 3D visualizer runs the same Barut–Zanghi dynamics in the browser and draws the trajectory as the electron moves. You can adjust every simulator constant, record a video, and control a comet-style tail.
+
+**What it does:**
+
+- **Real-time 3D trajectory** — The path is computed with the same 4th-order Runge–Kutta scheme as `CDE_4thRK.c` and plotted as the simulation runs.
+- **Adjustable parameters** — λ, charge q, E_x, E_z, B_z, time step **dt**, simulation time **T**, and initial momentum (α, β, p₀). **dt** and **steps per frame** can be changed while the simulation is running.
+- **Comet tail** — The trail behind the electron fades from opaque at the head to transparent at the tail. Tail length is set in units of 1000 steps (1–100, i.e. 1k–100k steps) via the **Tail (×1000)** slider.
+- **Camera** — Drag to rotate the view; scroll to zoom.
+- **Recording** — Click **Record** to capture the canvas; click **Stop recording** to download a WebM file (~2–3 MB/min at 720p). Re-encode for a smaller MP4:  
+  `ffmpeg -i recording.webm -c:v libx264 -crf 23 -preset medium output.mp4`
+
+**Sample video:** [sample_video.webm](sample_video.webm) — short recording of the visualizer.
+
+**Run in the browser:**
+
+1. Serve the `visualizer` folder (required so the page can load the scripts):
+   ```bash
+   cd visualizer && python3 -m http.server 8080
+   ```
+2. Open [http://localhost:8080](http://localhost:8080) in your browser.
+
+Or from the project root:
+   ```bash
+   python3 -m http.server 8080
+   ```
+   Then open [http://localhost:8080/visualizer/](http://localhost:8080/visualizer/).
+
+**Controls:** **Run** / **Pause**, **Reset**, **Record** / **Stop recording**. Use the panel sliders to change physics and tail length.
+
+---
+
 ## Theory reference
 
 A. O. Barut, Nino Zanghi
